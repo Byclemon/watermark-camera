@@ -4,3 +4,8 @@
 ### 小程序DEMO
 
 微信搜索：智能水印相机
+
+
+### 演示图片
+
+![watermark-camera](https://i.imgtg.com/2023/03/20/91YEp.jpg)
