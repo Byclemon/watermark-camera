@@ -7,6 +7,14 @@
 
 ![watermark-camera](https://i.imgtg.com/2023/03/20/91YEp.jpg)
 
+### 使用说明
+
+小程序中由于需要获取地址信息，所以采用的腾讯地图的API，在`/pages/camera/camera.js`文件中有一个地图key需要自己去申请。
+
+腾讯地图开发平台地址：[腾讯位置服务](https://lbs.qq.com/)
+
+同时还需要在小程序服务器域名中添加request合法域名：https://apis.map.qq.com
+
 
 ### 赞助 
 
