@@ -1,0 +1,35 @@
+<camera device-position="{{device}}" flash="{{flash}}" style="position: fixed;top:0;width:{{cameraWidth}}px;height:{{cameraHeight}}px;"></camera>
+
+
+<view class="watermark">
+	<view class="week">{{week}}</view>
+	<view class="time">{{date+' '+time}}</view>
+	<view class="location_box">
+		<view class="location">{{address}}</view>
+	</view>
+</view>
+
+<canvas type="2d" id="canvas" style="display: none;"></canvas>
+
+<view class="handle">
+	<button class="handle_card" bindtap="chooseLocation">
+		<image class="handle_card_icon" src="../../image/wz.png" mode="widthFix"></image>
+		<view class="handle_card_name">定位</view>
+	</button>
+	<button class="handle_card" bindtap="setDevice">
+		<image class="handle_card_icon" src="../../image/qh.png" mode="widthFix"></image>
+		<view class="handle_card_name">切换</view>
+	</button>
+	<button class="handle_ps" bindtap="takePhoto">
+		<image class="handle_ps_image" src="../../image/ps.png" mode="widthFix"></image>
+		<view class="handle_ps_name">拍摄</view>
+	</button>
+	<button class="handle_card" bindtap="setFlash">
+		<image class="handle_card_icon" src="../../image/sd.png" mode="widthFix"></image>
+		<view class="handle_card_name">闪光</view>
+	</button>
+	<button class="handle_card" open-type="share">
+		<image class="handle_card_icon" src="../../image/fx.png" mode="widthFix"></image>
+		<view class="handle_card_name">分享</view>
+	</button>
+</view>

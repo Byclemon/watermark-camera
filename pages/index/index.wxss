@@ -1,0 +1,83 @@
+.card {
+	margin: 20rpx;
+	padding: 20rpx;
+	box-shadow: 0 0 50rpx #e9e9e9;
+}
+
+.card_top {
+	display: flex;
+}
+
+.card_icon {
+	width: 50rpx;
+	height: 50rpx;
+	margin: 0 20rpx;
+}
+
+.card_title {
+	font-size: 30rpx;
+	font-weight: bold;
+	line-height: 50rpx;
+}
+
+.card_contnet {
+	padding: 20rpx;
+	font-size: 25rpx;
+	line-height: 50rpx;
+}
+
+.auth_list {
+	padding-top: 10rpx;
+}
+
+.auth_box {
+	display: flex;
+	justify-content: space-between;
+	font-size: 26rpx;
+	line-height: 50rpx;
+	padding: 10rpx 20rpx;
+}
+
+.card_tip {
+	font-size: 25rpx;
+	padding: 10rpx 20rpx;
+	line-height: 50rpx;
+	color: rgb(184, 184, 184);
+}
+
+.gn_list {
+	display: flex;
+	justify-content: space-around;
+}
+
+.gn {
+	width: 310rpx;
+	height: 180rpx;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	border: 1rpx solid #838383;
+	margin-top: 30rpx;
+	border-radius: 15rpx;
+	font-size: 30rpx;
+}
+
+.gn_icon {
+	width: 50rpx;
+	height: 50rpx;
+	margin-right: 10rpx;
+}
+
+.share {
+	background: #ffffff;
+	font-size: 30rpx;
+}
+
+.share::after {
+	border: none;
+}
+
+.auth_is_f {
+	text-decoration: underline;
+	color: rgb(221, 221, 221);
+}

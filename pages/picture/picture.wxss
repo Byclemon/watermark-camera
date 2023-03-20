@@ -1,0 +1,102 @@
+page{
+	padding-bottom: 100rpx;
+}
+.image {
+	width: 750rpx;
+	position: relative;
+}
+
+.watermark {
+	position: relative;
+	bottom: 80px;
+	left: 10px;
+	color: rgb(255, 255, 255);
+	font-size: 12px;
+}
+
+.time {
+	height: 20px;
+	line-height: 20px;
+}
+
+.week {
+	height: 20px;
+	line-height: 20px;
+}
+
+.location_box {
+	display: flex;
+	line-height: 20px;
+}
+
+.bottom_box{
+	position: fixed;
+	bottom: 50rpx;
+	width: 700rpx;
+	background: rgb(255, 255, 255);
+	left: 25rpx;
+	border-radius: 20rpx;
+	display: flex;
+	justify-content: space-around;
+	box-shadow: 0 0 50rpx #dfdfdf;
+	padding: 20rpx 0;
+}
+
+.card {
+	display: flex;
+	flex-direction: column;
+	text-align: center;
+	font-size: 25rpx;
+}
+.card_name{
+	text-align: center;
+}
+
+.card_icon {
+	width: 60rpx;
+	height: 60rpx;
+}
+
+.time_picker_bg{
+	position: fixed;
+	z-index:2;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	display: flex;
+	justify-items: center;
+	align-items: center;
+	background: rgba(0,0,0,0.2);
+}
+
+.time_picker_title{
+	text-align: center;
+	font-size: 35rpx;
+	font-weight: bold;
+}
+
+.time_picker_box{
+	width: 620rpx;
+	background: #ffffff;
+	padding: 20rpx 30rpx;
+	font-size: 30rpx;
+	line-height: 80rpx;
+	border-radius: 20rpx;
+	margin-left: 35rpx;
+	
+}
+
+.time_picker_btn::after{
+	border: none;
+}
+.time_picker_btn{
+	background: rgb(27, 83, 187);
+	font-size: 30rpx;
+	color: #ffffff;
+	margin-top: 30rpx;
+}
+.box{
+	text-align: center;
+	text-decoration :underline;
+}

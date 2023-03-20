@@ -1,0 +1,47 @@
+<canvas type="2d" id="canvas" style="display: none;"></canvas>
+
+<image class="image" src="{{imageUrl}}" mode="widthFix" />
+
+<view class="watermark" wx:if="{{week}}">
+	<view class="week">{{week}}</view>
+	<view class="time">{{date+' '+time}}</view>
+	<view class="location_box">
+		<view class="location">{{address}}</view>
+	</view>
+</view>
+
+<view class="bottom_box">
+	<view class="card" bindtap="chooseLocation">
+		<image class="card_icon" src="../../image/wz.png" mode="widthFix"></image>
+		<view class="card_name">定位</view>
+	</view>
+	<view class="card" bindtap="setTime">
+		<image class="card_icon" src="../../image/sj.png" mode="widthFix"></image>
+		<view class="card_name">时间</view>
+	</view>
+	<view class="card" bindtap="createPicture">
+		<image class="card_icon" src="../../image/sc.png" mode="widthFix"></image>
+		<view class="card_name">生成</view>
+	</view>
+</view>
+
+<view class="time_picker_bg" wx:if="{{showPicker}}">
+	<view class="time_picker_box">
+		<view class="time_picker_title">设置水印日期</view>
+		<view class="section">
+			<picker mode="date" value="{{date}}" start="2015-09-01" end="2017-09-01" bindchange="bindDateChange">
+				<view class="picker">
+					设定日期:<view class="box"> {{date}}</view>
+				</view>
+			</picker>
+		</view>
+		<view class="section">
+			<picker mode="time" value="{{time}}" start="00:00" end="23:59" bindchange="bindTimeChange">
+				<view class="picker">
+					设定时间:<view class="box">{{time}}</view>
+				</view>
+			</picker>
+		</view>
+		<button type="primary" class="time_picker_btn" bindtap="closePicker">设置完成</button>
+	</view>
+</view>

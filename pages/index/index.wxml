@@ -1,0 +1,56 @@
+<view class="card">
+	<view class="card_top">
+		<image class="card_icon" src="../../image/xj.png" mode="widthFix"></image>
+		<view class="card_title">智能水印相机</view>
+	</view>
+	<view class="card_contnet">
+		拍照自动添加时间、地点、经纬度等水印文字，可用于工作考勤、学习打卡、工作取证等，支持自定义内容以及给现有照片添加水印。无需安装，无需注册，即开即用。
+	</view>
+</view>
+
+<view class="card">
+	<view class="card_top">
+		<image class="card_icon" src="../../image/qx.png" mode="widthFix"></image>
+		<view class="card_title">权限列表</view>
+	</view>
+	<view class="auth_list">
+		<view class="auth_box" bindtap="getCamera">
+			<view class="auth_name">摄像头</view>
+			<view class="auth_is_t" wx:if="{{camera}}">已授权</view>
+			<view class="auth_is_f" wx:else>未授权</view>
+		</view>
+		<view class="auth_box" bindtap="getUserLocation">
+			<view class="auth_name">位置信息</view>
+			<view class="auth_is_t" wx:if="{{userLocation}}">已授权</view>
+			<view class="auth_is_f" wx:else>未授权</view>
+		</view>
+		<view class="auth_box" bindtap="getWritePhotosAlbum">
+			<view class="auth_name">添加相册</view>
+			<view class="auth_is_t" wx:if="{{writePhotosAlbum}}">已授权</view>
+			<view class="auth_is_f" wx:else>未授权</view>
+		</view>
+	</view>
+
+	<view class="card_tip">提示：小程序需要获取上方列表权限，才可正常使用。</view>
+</view>
+
+<view class="card">
+	<button class="share" open-type="share">分享好友</button>
+</view>
+
+<view class="card">
+	<view class="card_top">
+		<image class="card_icon" src="../../image/gn.png" mode="widthFix"></image>
+		<view class="card_title">常用功能</view>
+	</view>
+	<view class="gn_list">
+		<view class="gn" bindtap="goCamera">
+			<image class="gn_icon" src="../../image/xj.png" mode="widthFix"></image>
+			<view class="gn_name">水印拍摄</view>
+		</view>
+		<view class="gn" bindtap="goPicture">
+			<image class="gn_icon" src="../../image/tp.png" mode="widthFix"></image>
+			<view class="gn_name">图片水印</view>
+		</view>
+	</view>
+</view>

@@ -1,0 +1,64 @@
+.handle {
+	display: flex;
+	justify-content: space-around;
+	font-size: 28rpx;
+	height: 75px;
+	padding: 7.5px 0;
+	background: rgb(255, 255, 255);
+	position: fixed;
+	bottom: 0;
+	width: 750rpx;
+}
+
+.handle_ps,
+.handle_card {
+	display: flex;
+	flex-direction: column;
+	text-align: center;
+	height: 75px;
+	line-height: 25px;
+	background: #ffffff;
+	padding: 0;
+	font-size: 25rpx;
+	/* background: #000; */
+}
+.handle_ps::after{
+	border: none;
+}
+.handle_card::after{
+	border: none;
+}
+.handle_ps_image {
+	width: 50px;
+	height: 50px;
+}
+.handle_card_name{
+	font-size: 25rpx;
+}
+
+.handle_card_icon {
+	width: 40px;
+	height: 40px;
+	margin: 5px;
+
+}
+.watermark{
+	position: fixed;
+	bottom: 100px;
+	left: 10px;
+	color: rgb(255, 255, 255);
+}
+.time{
+	font-size: 15px;
+}
+.week{
+	font-size: 15px;
+	line-height: 25px;
+}
+.location_box{
+	display:flex;
+	font-size: 15px;
+	line-height: 25px;
+	height: 25px;
+
+}
