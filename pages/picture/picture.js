@@ -5,10 +5,6 @@ var qqmapsdk = new QQMapWX({
 });
 var timer;
 Page({
-
-	/**
-	 * 页面的初始数据
-	 */
 	data: {
 		imageUrl: "https://img.btstu.cn/api/images/5bd2af56cbbed.jpg",
 		canvasHeight: "",
@@ -24,42 +20,41 @@ Page({
 	/**
 	 * 生命周期函数--监听页面加载
 	 */
-	onLoad(options) {
+  async	onLoad(options) {
 		this.getTime();
-		this.getLocation()
+		this.getLocation();
+
+
 		if (options.imageUrl) {
+			let imageUrl = options.imageUrl;
+
+			// 最好是在导入照片时就直接做一个安全检测
+			// let checkResult = await this.checkImage(imageUrl)
+
+			this.init(imageUrl)
 			this.setData({
-				imageUrl: options.imageUrl
+				imageUrl
 			})
-			setTimeout(() => {
-				wx.getImageInfo({
-					src: options.imageUrl,
-					success: async res => {
-						console.log(res)
-						let watermarkScale = res.width / 375;
-						this.setData({
-							canvasHeight: res.height,
-							canvasWidth: res.width,
-							watermarkScale
-						})
-					}
-				})
-			}, 2000)
-		} else {
-			console.log(wx.getSystemInfoSync())
-			wx.getImageInfo({
-				src: this.data.imageUrl,
-				success: async res => {
-					console.log(res)
-					let watermarkScale = res.width / 375;
-					this.setData({
-						canvasHeight: res.height,
-						canvasWidth: res.width,
-						watermarkScale
-					})
-				}
-			})
+
 		}
+	},
+
+		/**
+	 * 初始化canvas
+	 */
+	init: function (imageUrl) {
+		wx.getImageInfo({
+			src: imageUrl,
+			success: async res => {
+				console.log(res)
+				let watermarkScale = res.width / 375;
+				this.setData({
+					canvasHeight: res.height,
+					canvasWidth: res.width,
+					watermarkScale
+				})
+			}
+		})
 	},
 
 	/**
@@ -162,6 +157,7 @@ Page({
 	 * 图片安全检测
 	 */
 	checkImage: function () {
+		//自己去接入一下
 		return new Promise((resolve, reject) => {
 
 		})
@@ -171,6 +167,7 @@ Page({
 	 * 文本安全检测
 	 */
 	checkText: function () {
+		//这个目前不需要，暂时不支持自定义文字
 		return new Promise((resolve, reject) => {
 
 		})
@@ -237,6 +234,10 @@ Page({
 			});
 		});
 	},
+
+	/**
+	 * 设置日期
+	 */
 	bindDateChange: function (e) {
 		let date = e.detail.value;
 		const dateStr = new Date(date);
@@ -246,9 +247,11 @@ Page({
 			date,
 			week
 		})
-
-
 	},
+
+	/**
+	 * 设置时间
+	 */
 	bindTimeChange: function (e) {
 		this.setData({
 			time: e.detail.value

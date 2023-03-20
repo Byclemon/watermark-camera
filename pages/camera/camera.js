@@ -1,9 +1,11 @@
 var Utils = require('../../utils/utils');
 var QQMapWX = require('../../libs/qqmap-wx-jssdk.js');
+
 var qqmapsdk = new QQMapWX({
-	key: 'UDUBZ-OZQ3F-IGWJH-JVQLK-SI5J2-UPFAU'
+	key: '' //在这里输入你在腾讯位置服务平台申请的KEY
 });
 var timer;
+
 Page({
 	data: {
 		device: 'back',
@@ -33,6 +35,7 @@ Page({
 			cameraHeight: cameraHeight
 		});
 	},
+
 	/**
 	 * 生命周期函数--监听页面加载
 	 */
@@ -41,6 +44,9 @@ Page({
 		this.getLocation()
 	},
 
+		/**
+	 * 获取当前时间
+	 */
 	getTime: function () {
 		timer = setInterval(() => {
 			let timeData = Utils.formatTime()
@@ -75,6 +81,16 @@ Page({
 	},
 
 	/**
+	 * 图片安全检测
+	 */
+	checkImage: function () {
+		//自己去接入一下
+		return new Promise((resolve, reject) => {
+
+		})
+	},
+
+	/**
 	 * 拍摄事件
 	 */
 	takePhoto: function () {
@@ -83,6 +99,9 @@ Page({
 			quality: 'high',
 			success: async (res) => {
 				console.log(res)
+				// 先图片内容安全检测
+				// let checkResult = await this.checkImage(imageUrl)
+
 				let addWatermark = await this.addWatermark(res.tempImagePath)
 				wx.previewImage({
 					urls: [addWatermark],
@@ -174,6 +193,10 @@ Page({
 			flash: this.data.flash == 'torch' ? 'off' : 'torch'
 		})
 	},
+
+		/**
+	 * 选择位置信息
+	 */
 	chooseLocation: function () {
 		wx.chooseLocation({
 			success: res => {

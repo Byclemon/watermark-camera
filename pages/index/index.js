@@ -28,6 +28,7 @@ Page({
 			}
 		})
 	},
+
 	getWritePhotosAlbum: function () {
 		wx.authorize({
 			scope: 'scope.writePhotosAlbum',
@@ -36,6 +37,7 @@ Page({
 			}
 		})
 	},
+
 	getCamera: function () {
 		wx.authorize({
 			scope: 'scope.camera',
@@ -44,6 +46,7 @@ Page({
 			}
 		})
 	},
+
 	getUserLocation: function () {
 		wx.authorize({
 			scope: 'scope.userLocation',
@@ -52,13 +55,14 @@ Page({
 			}
 		})
 	},
+
 	goCamera: function () {
 		wx.navigateTo({
 			url: '/pages/camera/camera',
 		})
 	},
-	goPicture: function () {
 
+	goPicture: function () {
 		wx.chooseMedia({
 			count: 1,
 			mediaType: ['image'],
