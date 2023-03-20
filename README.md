@@ -5,7 +5,22 @@
 
 微信搜索：智能水印相机
 
-
-### 演示图片
-
 ![watermark-camera](https://i.imgtg.com/2023/03/20/91YEp.jpg)
+
+
+### 赞助 
+
+如果你觉得这个项目对你有帮助，并且情况允许的话，可以给我一点点支持，总之非常感谢支持～
+- 微信
+
+ ![wechat](./gitimage/wechat.jpg)
+
+
+- 支付宝
+
+ ![alipay](./gitimage/alipay.jpg)
+
+
+### License
+
+Apache 2.0 © [byclemon](https://github.com/Byclemon/watermark-camera/blob/main/LICENSE)
