@@ -29,7 +29,8 @@ Page({
 		const statusBarHeight = systemInfo.statusBarHeight;
 		const menuButtonInfo = wx.getMenuButtonBoundingClientRect();
 		const cameraWidth = screenWidth;
-		const cameraHeight = screenHeight - statusBarHeight - menuButtonInfo.height - (menuButtonInfo.top - systemInfo.statusBarHeight) * 2 - 90;
+		const cameraHeight = screenHeight - statusBarHeight - menuButtonInfo.height - (menuButtonInfo.top -
+			systemInfo.statusBarHeight) * 2 - 90;
 		this.setData({
 			cameraWidth: cameraWidth,
 			cameraHeight: cameraHeight
@@ -44,10 +45,10 @@ Page({
 		this.getLocation()
 	},
 
-		/**
+	/**
 	 * 获取当前时间
 	 */
-	getTime: function () {
+	getTime: function() {
 		timer = setInterval(() => {
 			let timeData = Utils.formatTime()
 			this.setData({
@@ -61,7 +62,7 @@ Page({
 	/**
 	 * 获取地址信息
 	 */
-	getLocation: function () {
+	getLocation: function() {
 		wx.getLocation({
 			success: res => {
 				qqmapsdk.reverseGeocoder({
@@ -83,17 +84,48 @@ Page({
 	/**
 	 * 图片安全检测
 	 */
-	checkImage: function () {
+	checkImage: function(imageUrl) {
 		//自己去接入一下
 		return new Promise((resolve, reject) => {
-
+			wx.request({
+				url: checkApi,
+				method: "POST",
+				data: {
+					image: imageUrl
+				},
+				success: res => {
+					wx.hideLoading()
+					resolve(res.data.errcode)
+					if (res.data.errcode == 0) {} else if (res.data.errcode == 87014) {
+						wx.showModal({
+							title: '温馨提示',
+							content: '您的照片存在违规内容，请规范本小程序使用。',
+							showCancel: false,
+							complete: (res) => {
+								wx.reLaunch({
+									url: '/pages/index/index',
+								})
+							}
+						})
+					} else {
+						wx.showToast({
+							title: '图片检测失败，请重试',
+							success: () => {
+								wx.reLaunch({
+									url: '/pages/index/index',
+								})
+							}
+						})
+					}
+				}
+			})
 		})
 	},
 
 	/**
 	 * 拍摄事件
 	 */
-	takePhoto: function () {
+	takePhoto: function() {
 		const ctx = wx.createCameraContext()
 		ctx.takePhoto({
 			quality: 'high',
@@ -101,6 +133,7 @@ Page({
 				console.log(res)
 				// 先图片内容安全检测
 				// let checkResult = await this.checkImage(imageUrl)
+				// if(checkResult==0){}
 
 				let addWatermark = await this.addWatermark(res.tempImagePath)
 				wx.previewImage({
@@ -113,7 +146,7 @@ Page({
 	/**
 	 * 给图片添加水印
 	 */
-	addWatermark: function (imageUrl) {
+	addWatermark: function(imageUrl) {
 		console.log(imageUrl)
 		return new Promise((resolve, reject) => {
 			wx.showLoading({
@@ -150,7 +183,8 @@ Page({
 					ctx.fillText(this.data.address, 10, cameraHeight - 10);
 
 					// 绘制时间
-					ctx.fillText(this.data.date + ' ' + this.data.time, 10, cameraHeight - 35);
+					ctx.fillText(this.data.date + ' ' + this.data.time, 10,
+						cameraHeight - 35);
 
 					// 绘制星期
 					ctx.fillText(this.data.week, 10, cameraHeight - 60);
@@ -175,7 +209,7 @@ Page({
 	/**
 	 * 切换摄像头
 	 */
-	setDevice: function () {
+	setDevice: function() {
 		this.setData({
 			device: this.data.device == 'back' ? 'front' : 'back'
 		})
@@ -188,16 +222,16 @@ Page({
 	/**
 	 * 闪光灯开关
 	 */
-	setFlash: function () {
+	setFlash: function() {
 		this.setData({
 			flash: this.data.flash == 'torch' ? 'off' : 'torch'
 		})
 	},
 
-		/**
+	/**
 	 * 选择位置信息
 	 */
-	chooseLocation: function () {
+	chooseLocation: function() {
 		wx.chooseLocation({
 			success: res => {
 				console.log(res)
