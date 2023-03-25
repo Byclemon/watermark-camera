@@ -2,7 +2,7 @@ var Utils = require('../../utils/utils');
 var QQMapWX = require('../../libs/qqmap-wx-jssdk.js');
 
 var qqmapsdk = new QQMapWX({
-	key: '' //在这里输入你在腾讯位置服务平台申请的KEY
+	key: 'UDUBZ-OZQ3F-IGWJH-JVQLK-SI5J2-UPFAU' //在这里输入你在腾讯位置服务平台申请的KEY
 });
 var timer;
 
@@ -16,7 +16,9 @@ Page({
 		address: "",
 		addressName: "",
 		cameraWidth: 0,
-		cameraHeight: 0
+		cameraHeight: 0,
+		canvasWidth: 0,
+		canvasHeight: 0
 	},
 
 	/**
@@ -31,6 +33,8 @@ Page({
 		const cameraWidth = screenWidth;
 		const cameraHeight = screenHeight - statusBarHeight - menuButtonInfo.height - (menuButtonInfo.top -
 			systemInfo.statusBarHeight) * 2 - 90;
+
+		console.log(systemInfo)
 		this.setData({
 			cameraWidth: cameraWidth,
 			cameraHeight: cameraHeight
@@ -48,7 +52,7 @@ Page({
 	/**
 	 * 获取当前时间
 	 */
-	getTime: function() {
+	getTime: function () {
 		timer = setInterval(() => {
 			let timeData = Utils.formatTime()
 			this.setData({
@@ -62,7 +66,7 @@ Page({
 	/**
 	 * 获取地址信息
 	 */
-	getLocation: function() {
+	getLocation: function () {
 		wx.getLocation({
 			success: res => {
 				qqmapsdk.reverseGeocoder({
@@ -84,7 +88,7 @@ Page({
 	/**
 	 * 图片安全检测
 	 */
-	checkImage: function(imageUrl) {
+	checkImage: function (imageUrl) {
 		//自己去接入一下
 		return new Promise((resolve, reject) => {
 			wx.request({
@@ -125,12 +129,17 @@ Page({
 	/**
 	 * 拍摄事件
 	 */
-	takePhoto: function() {
+	takePhoto: function () {
 		const ctx = wx.createCameraContext()
 		ctx.takePhoto({
 			quality: 'high',
 			success: async (res) => {
 				console.log(res)
+				this.setData({
+					canvasWidth: res.width,
+					canvasHeight: res.height,
+					tempImagePath: res.tempImagePath
+				})
 				// 先图片内容安全检测
 				// let checkResult = await this.checkImage(imageUrl)
 				// if(checkResult==0){}
@@ -139,6 +148,9 @@ Page({
 				wx.previewImage({
 					urls: [addWatermark],
 				})
+				this.setData({
+					tempImagePath: ''
+				})
 			}
 		})
 	},
@@ -146,7 +158,7 @@ Page({
 	/**
 	 * 给图片添加水印
 	 */
-	addWatermark: function(imageUrl) {
+	addWatermark: function (imageUrl) {
 		console.log(imageUrl)
 		return new Promise((resolve, reject) => {
 			wx.showLoading({
@@ -163,31 +175,31 @@ Page({
 
 				const dpr = wx.getSystemInfoSync().pixelRatio;
 				const {
-					cameraWidth,
-					cameraHeight
+					canvasWidth,
+					canvasHeight
 				} = this.data;
-				canvas.width = cameraWidth * dpr
-				canvas.height = cameraHeight * dpr
-				ctx.scale(dpr, dpr)
+				canvas.width = canvasWidth * 1.5
+				canvas.height = canvasHeight * 1.5
+				ctx.scale(1.5, 1.5)
 
 				// 绘制背景图片
 				const image = canvas.createImage();
 				image.onload = () => {
-					ctx.drawImage(image, 0, 0, cameraWidth, cameraHeight);
+					ctx.drawImage(image, 0, 0, canvasWidth, canvasHeight);
 
-					ctx.font = 'normal 12px null';
+					ctx.font = 'normal 28px null';
 					ctx.fillStyle = '#ffffff';
 					ctx.textBaseline = 'bottom';
 
 					// 绘制地址
-					ctx.fillText(this.data.address, 10, cameraHeight - 10);
+					ctx.fillText(this.data.address, 20, canvasHeight - 20);
 
 					// 绘制时间
-					ctx.fillText(this.data.date + ' ' + this.data.time, 10,
-						cameraHeight - 35);
+					ctx.fillText(this.data.date + ' ' + this.data.time, 20, canvasHeight - 65);
 
 					// 绘制星期
-					ctx.fillText(this.data.week, 10, cameraHeight - 60);
+					ctx.fillText(this.data.week, 20, canvasHeight - 115);
+
 
 					wx.canvasToTempFilePath({
 						canvas,
@@ -198,7 +210,7 @@ Page({
 						fail: () => {
 							wx.hideLoading()
 							reject(new Error('转换为图片失败'));
-						},
+						}
 					});
 				}
 				image.src = imageUrl;
@@ -209,7 +221,7 @@ Page({
 	/**
 	 * 切换摄像头
 	 */
-	setDevice: function() {
+	setDevice: function () {
 		this.setData({
 			device: this.data.device == 'back' ? 'front' : 'back'
 		})
@@ -222,7 +234,7 @@ Page({
 	/**
 	 * 闪光灯开关
 	 */
-	setFlash: function() {
+	setFlash: function () {
 		this.setData({
 			flash: this.data.flash == 'torch' ? 'off' : 'torch'
 		})
@@ -231,7 +243,7 @@ Page({
 	/**
 	 * 选择位置信息
 	 */
-	chooseLocation: function() {
+	chooseLocation: function () {
 		wx.chooseLocation({
 			success: res => {
 				console.log(res)

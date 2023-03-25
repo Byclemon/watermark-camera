@@ -1,4 +1,4 @@
-<canvas type="2d" id="canvas" style="display: none;"></canvas>
+<canvas type="2d" id="canvas" style="position: fixed; top: -10000px; left: -10000px; width: {{canvasWidth}}px;height: {{canvasHeight}}px;"></canvas>
 
 <image class="image" src="{{imageUrl}}" mode="widthFix" />
 

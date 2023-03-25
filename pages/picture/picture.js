@@ -26,10 +26,10 @@ Page({
 
 		if (options.imageUrl) {
 			let imageUrl = options.imageUrl;
-			
+
 			// 最好是在导入照片时就直接做一个安全检测
 			// let checkResult = await this.checkImage(imageUrl)
-			
+
 			this.init(imageUrl)
 			this.setData({
 				imageUrl
@@ -40,15 +40,18 @@ Page({
 	/**
 	 * 初始化canvas
 	 */
-	init: function(imageUrl) {
+	init: function (imageUrl) {
+		const systemInfo = wx.getSystemInfoSync();
+		const canvasWidth = systemInfo.screenWidth;
+		const dpr = systemInfo.pixelRatio;
 		wx.getImageInfo({
 			src: imageUrl,
 			success: async res => {
 				console.log(res)
-				let watermarkScale = res.width / 375;
+				let watermarkScale = res.width / canvasWidth;
 				this.setData({
-					canvasHeight: res.height,
-					canvasWidth: res.width,
+					canvasHeight: res.height * dpr / watermarkScale,
+					canvasWidth: canvasWidth * dpr,
 					watermarkScale
 				})
 			}
@@ -68,7 +71,7 @@ Page({
 	onShow() {
 
 	},
-	getTime: function() {
+	getTime: function () {
 		timer = setInterval(() => {
 			let timeData = Utils.formatTime()
 			this.setData({
@@ -82,7 +85,7 @@ Page({
 	/**
 	 * 获取地址信息
 	 */
-	getLocation: function() {
+	getLocation: function () {
 		wx.getLocation({
 			success: res => {
 				qqmapsdk.reverseGeocoder({
@@ -104,7 +107,7 @@ Page({
 	/**
 	 * 手动选择地点
 	 */
-	chooseLocation: function() {
+	chooseLocation: function () {
 		wx.chooseLocation({
 			success: res => {
 				console.log(res)
@@ -121,7 +124,7 @@ Page({
 	/**
 	 * 手动选择时间
 	 */
-	setTime: function() {
+	setTime: function () {
 		clearInterval(timer)
 		this.setData({
 			showPicker: true
@@ -131,7 +134,7 @@ Page({
 	/**
 	 * 关闭设置时间框
 	 */
-	closePicker: function() {
+	closePicker: function () {
 		this.setData({
 			showPicker: false
 		})
@@ -140,7 +143,7 @@ Page({
 	/**
 	 * 生成图片
 	 */
-	createPicture: async function() {
+	createPicture: async function () {
 		let imageUrl = this.data.imageUrl;
 		console.log(imageUrl)
 		// let checkResult = await this.checkImage(imageUrl)
@@ -154,7 +157,7 @@ Page({
 	/**
 	 * 图片安全检测
 	 */
-	checkImage: function() {
+	checkImage: function () {
 		//自己去接入一下
 		return new Promise((resolve, reject) => {
 			wx.request({
@@ -195,7 +198,7 @@ Page({
 	/**
 	 * 文本安全检测
 	 */
-	checkText: function() {
+	checkText: function () {
 		//这个目前不需要，暂时不支持自定义文字
 		return new Promise((resolve, reject) => {
 
@@ -205,8 +208,7 @@ Page({
 	/**
 	 * 给图片添加水印
 	 */
-	addWatermark: function(imageUrl) {
-		let watermarkScale = this.data.watermarkScale;
+	addWatermark: function (imageUrl) {
 		return new Promise((resolve, reject) => {
 			wx.showLoading({
 				title: '图片生成中...',
@@ -225,41 +227,41 @@ Page({
 				canvas.width = canvasWidth;
 				canvas.height = canvasHeight;
 
+				const dpr = wx.getSystemInfoSync().pixelRatio;
 				// 绘制背景图片
 				const image = canvas.createImage();
 				image.onload = () => {
 					ctx.drawImage(image, 0, 0, canvasWidth, canvasHeight);
 
-					ctx.font = 'normal ' + 12 * watermarkScale + 'px null';
+					ctx.font = 'normal ' + 12 * dpr + 'px null';
 					ctx.fillStyle = '#ffffff';
 					ctx.textBaseline = 'bottom';
 
 					// 绘制地址
-					ctx.fillText(this.data.address, 10 * watermarkScale, canvasHeight -
-						10 * watermarkScale);
+					ctx.fillText(this.data.address, 20, canvasHeight - 10* dpr);
 
 					//绘制时间
-					ctx.fillText(this.data.date + ' ' + this.data.time, 10 *
-						watermarkScale, canvasHeight - 30 * watermarkScale);
+					ctx.fillText(this.data.date + ' ' + this.data.time, 20, canvasHeight -30* dpr);
 
 					//绘制星期
-					ctx.fillText(this.data.week, 10 * watermarkScale, canvasHeight -
-						50 * watermarkScale);
+					ctx.fillText(this.data.week, 20, canvasHeight - 50* dpr);
 
-					wx.canvasToTempFilePath({
-						canvas,
-						success: (res) => {
-							wx.hideLoading()
-							resolve(res.tempFilePath);
-						},
-						fail: () => {
-							wx.hideLoading()
-							wx.showToast({
-								title: '图片生成失败',
-							})
-							reject(new Error('转换为图片失败'));
-						},
-					});
+					setTimeout(() => {
+						wx.canvasToTempFilePath({
+							canvas,
+							success: (res) => {
+								wx.hideLoading()
+								resolve(res.tempFilePath);
+							},
+							fail: () => {
+								wx.hideLoading()
+								wx.showToast({
+									title: '图片生成失败',
+								})
+								reject(new Error('转换为图片失败'));
+							},
+						});
+					}, 1000)
 
 				}
 				image.src = imageUrl
@@ -270,7 +272,7 @@ Page({
 	/**
 	 * 设置日期
 	 */
-	bindDateChange: function(e) {
+	bindDateChange: function (e) {
 		let date = e.detail.value;
 		const dateStr = new Date(date);
 		const week = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'][dateStr.getDay()];
@@ -284,7 +286,7 @@ Page({
 	/**
 	 * 设置时间
 	 */
-	bindTimeChange: function(e) {
+	bindTimeChange: function (e) {
 		this.setData({
 			time: e.detail.value
 		})

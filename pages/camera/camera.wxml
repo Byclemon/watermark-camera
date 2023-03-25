@@ -1,5 +1,5 @@
-<camera device-position="{{device}}" flash="{{flash}}" style="position: fixed;top:0;width:{{cameraWidth}}px;height:{{cameraHeight}}px;"></camera>
-
+<camera wx:if="{{!tempImagePath}}" resolution="high" 	frame-size="large"  device-position="{{device}}" flash="{{flash}}" style="position: fixed;top:0;width:{{cameraWidth}}px;height:{{cameraHeight}}px;"></camera>
+<image src="{{tempImagePath}}" mode="widthFix" style="width: 750rpx;" wx:else></image>
 
 <view class="watermark">
 	<view class="week">{{week}}</view>
@@ -9,7 +9,7 @@
 	</view>
 </view>
 
-<canvas type="2d" id="canvas" style="display: none;"></canvas>
+<canvas type="2d" id="canvas" style="position: fixed; top: -10000px; left: -10000px; width: {{canvasWidth}}px;height: {{canvasHeight}}px;"></canvas>
 
 <view class="handle">
 	<button class="handle_card" bindtap="chooseLocation">
