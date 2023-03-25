@@ -7,9 +7,8 @@ var timer;
 Page({
 	data: {
 		imageUrl: "https://img.btstu.cn/api/images/5bd2af56cbbed.jpg",
-		canvasHeight: "",
-		canvasWidth: "",
-		watermarkScale: 1,
+		canvasHeight: 0,
+		canvasWidth: 0,
 		date: "",
 		time: '',
 		week: '',
@@ -31,10 +30,11 @@ Page({
 			// let checkResult = await this.checkImage(imageUrl)
 
 			this.init(imageUrl)
-			this.setData({
-				imageUrl
-			})
+			// this.setData({
+			// 	imageUrl
+			// })
 		}
+		// this.init(this.data.imageUrl)
 	},
 
 	/**
@@ -50,10 +50,12 @@ Page({
 				console.log(res)
 				let watermarkScale = res.width / canvasWidth;
 				this.setData({
-					canvasHeight: res.height * dpr / watermarkScale,
-					canvasWidth: canvasWidth * dpr,
-					watermarkScale
+					canvasHeight: Math.round(res.height / watermarkScale),
+					canvasWidth: canvasWidth,
+					imageUrl: res.path
 				})
+
+				console.log(this.data.canvasHeight, this.data.canvasWidth)
 			}
 		})
 	},
@@ -218,33 +220,39 @@ Page({
 				node: true,
 				size: true
 			}).exec((res) => {
+				console.log(res)
 				const canvas = res[0].node;
 				const ctx = canvas.getContext('2d');
+				const dpr = wx.getSystemInfoSync().pixelRatio;
 				const {
 					canvasWidth,
 					canvasHeight
 				} = this.data;
-				canvas.width = canvasWidth;
-				canvas.height = canvasHeight;
+				canvas.width = canvasWidth*dpr;
+				canvas.height = canvasHeight*dpr;
+				ctx.scale(dpr, dpr)
 
-				const dpr = wx.getSystemInfoSync().pixelRatio;
+				console.log(	canvasWidth,
+					canvasHeight)
+
+			
 				// 绘制背景图片
 				const image = canvas.createImage();
 				image.onload = () => {
 					ctx.drawImage(image, 0, 0, canvasWidth, canvasHeight);
 
-					ctx.font = 'normal ' + 12 * dpr + 'px null';
+					ctx.font = 'normal 14px null';
 					ctx.fillStyle = '#ffffff';
 					ctx.textBaseline = 'bottom';
 
 					// 绘制地址
-					ctx.fillText(this.data.address, 20, canvasHeight - 10* dpr);
+					ctx.fillText(this.data.address, 10, canvasHeight - 20);
 
 					//绘制时间
-					ctx.fillText(this.data.date + ' ' + this.data.time, 20, canvasHeight -30* dpr);
+					ctx.fillText(this.data.date + ' ' + this.data.time, 10, canvasHeight - 45);
 
 					//绘制星期
-					ctx.fillText(this.data.week, 20, canvasHeight - 50* dpr);
+					ctx.fillText(this.data.week, 10, canvasHeight -70);
 
 					setTimeout(() => {
 						wx.canvasToTempFilePath({
@@ -253,7 +261,8 @@ Page({
 								wx.hideLoading()
 								resolve(res.tempFilePath);
 							},
-							fail: () => {
+							fail: (err) => {
+								console.log(err)
 								wx.hideLoading()
 								wx.showToast({
 									title: '图片生成失败',
